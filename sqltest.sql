@@ -42,7 +42,7 @@ select * from employees_table order by salary desc limit 3;
 
 select sum(salary) from employees_table;
 
-select avg(salary) from employees_table group by salary having avg(salary) >70000;
+select avg(salary) from employees_table having avg(salary) >70000;
 
 --Section D: String & Date Functions
 select concat(first_name,' ',last_name) from employees_table; 
@@ -51,7 +51,7 @@ select extract ('year' from hire_date) from employees_table;
 
 select upper(first_name) from employees_table;
 
-select age((select extract ('year' from now())),(select extract ('year' from hire_date) from employees_table));
+select extract('year' from age(current_date,hire_date)) from employees_table;
 
 select date_trunc('month',hire_date) from employees_table;
 
@@ -61,16 +61,16 @@ select coalesce(salary,50000) from employees_table;
 select greatest(salary) from employees_table;
 select least(salary) from employees_table;
 
-select (salary * 100) / nullif((select sum(salary) from employees_table), 0) as salary_percentage from employees_table;
+select (salary * 100) / nullif((select sum(salary) from employees_table), 0) from employees_table;
 
 --Section F: Joins & Set Operations
 select * from departments_table d inner join employees_table e on d.dept_id=e.dept_id;
 
 select * from departments_table d left join employees_table e on d.dept_id=e.dept_id;
 
-select * from departments_table d left join employees_table e on d.dept_id=e.dept_id
+select dept_id from departments_table 
 except
-select * from departments_table d right join employees_table e on d.dept_id=e.dept_id;
+select dept_id from employees_table;
 
 --Explain the difference between UNION and UNION ALL with an example.
 --union removes duplicates, while union keeps all rows including duplicates.
